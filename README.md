@@ -56,18 +56,41 @@ Instead of memorizing how YOU must adapt to teaching, we adapt teaching to match
 
 ---
 
+## Why IDK.org Is Different
+
+| Feature | Traditional School | Traditional Apps | IDK.org |
+|---------|-------------------|------------------|---------|
+| **Knows how YOU learn** | ❌ | ❌ | ✅ |
+| **Personalizes teaching style** | ❌ | Partial | ✅ |
+| **Available 24/7** | ❌ | ✅ | ✅ |
+| **Never judges** | ❌ | ✅ | ✅ |
+| **Teaches ANYTHING** | Limited | Limited | ✅ |
+| **Adapts in real-time** | ❌ | ❌ | ✅ |
+| **Based on neuroscience** | ❌ | ❌ | ✅ |
+
+---
+
+## Technology Stack
+
+- **Backend**: Node.js + Express.js
+- **Frontend**: React (Web), React Native (Mobile)
+- **AI Engine**: Claude API
+- **Database**: MongoDB
+- **Deployment**: Cloud infrastructure
+
+---
 
 ## Quick Start
 
 ### For Users
-1. Visit IDK.org (coming soon)
+1. Visit IDK.org
 2. Take the 2-minute diagnostic quiz
 3. Start learning with your personal AI tutor
 
 ### For Developers
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/idk-org.git
+git clone https://github.com/mrbrown098/idk-org.git
 cd idk-org
 
 # Install dependencies
@@ -75,7 +98,7 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
-# Add your Claude API key to .env
+# Add your API keys to .env
 
 # Start the development server
 npm start
@@ -106,23 +129,54 @@ Quiz Engine         AI Tutor Engine
 
 ---
 
-## The Vision
+## Project Structure
 
-> Education should adapt to the student, not the other way around.
+```
+idk-org/
+├── src/
+│   ├── config/          # Configuration files
+│   ├── routes/          # API endpoints
+│   ├── controllers/     # Business logic
+│   ├── models/          # Database schemas
+│   ├── services/        # Business services
+│   ├── middleware/      # Express middleware
+│   └── utils/           # Utility functions
+├── frontend/            # Web application (React)
+├── mobile/              # Mobile application (React Native)
+├── docs/                # Documentation
+└── tests/               # Test suite
+```
 
-We believe every person has a unique learning fingerprint. When we honor that individuality and match teaching to it, extraordinary learning happens.
-
-IDK.org is building the future of personalized education — one brain at a time.
+See `PROJECT_STRUCTURE.md` for detailed folder breakdown.
 
 ---
 
-## Contributing
+## API Documentation
 
-This is an active development project. We welcome:
-- Bug reports and feature requests (open an issue)
-- Code contributions (see CONTRIBUTING.md coming soon)
-- User feedback and testing
-- Ideas for improvement
+Complete API reference available in `API.md`. Endpoints include:
+
+- Authentication (register, login, logout)
+- Quiz system (questions, submission, results)
+- AI Tutor (chat, history, subject selection)
+- Learning progress (tracking, recommendations)
+- User profiles (settings, preferences)
+
+---
+
+## Development
+
+### Prerequisites
+- Node.js v18+
+- MongoDB (local or Atlas)
+- Claude API key
+
+### Setup Instructions
+
+See `SETUP.md` for complete setup guide including:
+- Database configuration
+- Environment variables
+- API key setup
+- Local development server
 
 ---
 
@@ -130,38 +184,20 @@ This is an active development project. We welcome:
 
 MIT License - See LICENSE file for details
 
-This means you can use, modify, and commercialize this code with attribution.
+This code is open source and available for commercial and personal use with attribution.
 
 ---
 
 ## Support
 
-Have questions? Ideas? Found a bug?
-- 📧 Email: mrbrown098613@gmail.com
-- 🐛 Issues: Use GitHub issues for bugs/features
+**Issues & Bugs:**
+- Use GitHub Issues for bug reports and feature requests
 
-
----
-
-## Meet the Founder
-
-**Vision**: Someone who failed in traditional school despite being brilliant, realized the system was broken, and spent 10 years perfecting a solution. Now finally build it.
-
-**Mission**: Make personalized learning available to everyone, everywhere.
-
----
-
-## Acknowledgments
-
-Built with:
-- Claude AI (Anthropic) - The AI tutor engine
-- Open-source community - For amazing tools and libraries
-- Early believers - Who saw the vision and believed in the mission
+**Questions:**
+- Check the documentation files in `/docs`
+- Review API.md for technical details
+- See SETUP.md for configuration help
 
 ---
 
 **IDK.org — Because your brain is unique. Your education should be too.**
-
----
-
-*Last updated: June 2026 | Version: 0.1.0 Alpha*
