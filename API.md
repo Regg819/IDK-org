@@ -176,11 +176,6 @@ GET /quiz/questions
           "weight": {"visual": 0.5, "auditory": 0, "linguistic": 0.5}
         }
       ]
-    },
-    {
-      "id": 2,
-      "question": "...",
-      "...": "..."
     }
   ],
   "totalQuestions": 10
@@ -298,13 +293,6 @@ GET /tutor/history?limit=50&subject=biology
       "tutorResponse": "Photosynthesis is the process...",
       "subject": "biology",
       "timestamp": "2026-06-02T10:30:00Z"
-    },
-    {
-      "id": "msg_2",
-      "userMessage": "Can you explain it visually?",
-      "tutorResponse": "Of course! Here's a visual...",
-      "subject": "biology",
-      "timestamp": "2026-06-02T10:32:00Z"
     }
   ],
   "totalMessages": 2,
@@ -339,17 +327,7 @@ GET /learning/progress
       {
         "name": "Python Programming",
         "progress": 0.65,
-        "lessonsCompleted": 8,
-        "topics": [
-          {
-            "name": "Variables and Data Types",
-            "mastery": 0.85
-          },
-          {
-            "name": "Functions",
-            "mastery": 0.45
-          }
-        ]
+        "lessonsCompleted": 8
       }
     ]
   }
@@ -376,20 +354,8 @@ GET /learning/recommendations?subject=python
     {
       "type": "focus",
       "title": "You're struggling with Functions",
-      "description": "Your mastery score is 45%. Try visual flowcharts to understand function flow.",
+      "description": "Your mastery score is 45%. Try visual flowcharts.",
       "action": "Start visual tutorial"
-    },
-    {
-      "type": "strength",
-      "title": "Great job with Variables!",
-      "description": "You've mastered variable concepts. Ready for the next challenge?",
-      "action": "Move to advanced topics"
-    },
-    {
-      "type": "suggestion",
-      "title": "Try a different learning format",
-      "description": "You learn best visually, but you haven't tried our diagram-based lessons yet.",
-      "action": "View diagram tutorials"
     }
   ]
 }
@@ -440,17 +406,6 @@ All responses include:
 Content-Type: application/json
 X-Request-ID: unique_request_id
 X-Response-Time: milliseconds
-Cache-Control: appropriate headers
-```
-
----
-
-## WebSocket (Real-time Features - Coming Later)
-
-For real-time tutor chat:
-
-```
-ws://localhost:5000/api/tutor/ws
 ```
 
 ---
@@ -472,10 +427,6 @@ const response = await fetch('http://localhost:5000/api/auth/register', {
 });
 const data = await response.json();
 const token = data.token;
-
-// Get quiz questions
-const quizResponse = await fetch('http://localhost:5000/api/quiz/questions');
-const quizData = await quizResponse.json();
 ```
 
 ### React Component
@@ -503,8 +454,4 @@ function QuizComponent() {
 
 ---
 
-## Documentation Updates
-
-This API documentation will be updated as new endpoints are added. Current version: **0.1.0**
-
-Next update: Quiz and Authentication endpoints (Day 2)
+**API Version: 1.0**
