@@ -19,7 +19,7 @@ Before you start, make sure you have these installed:
 
 ### Option A: Using Git (recommended)
 ```bash
-git clone https://github.com/yourusername/idk-org.git
+git clone https://github.com/mrbrown098/idk-org.git
 cd idk-org
 ```
 
@@ -44,7 +44,7 @@ This installs all required Node.js packages from `package.json`.
 - MongoDB driver (database)
 - JWT (authentication)
 - Claude API client
-- CORS (cross-origin requests for web/mobile)
+- CORS (cross-origin requests)
 - And more...
 
 ---
@@ -61,7 +61,7 @@ cp .env.example .env
 
 ### Edit `.env` with your values
 
-Open `.env` in your text editor and fill in:
+Open `.env` in your text editor and fill in the required values:
 
 ```
 PORT=5000
@@ -91,7 +91,7 @@ MOBILE_URL=idk://app
 **Important:**
 - ⚠️ Never commit `.env` to GitHub
 - ⚠️ Keep API keys secret
-- ✅ Different keys for development and production
+- ✅ Use different keys for development and production
 
 ---
 
@@ -158,7 +158,6 @@ npm start
 **Expected output:**
 ```
 🚀 IDK.org server running on http://localhost:5000
-📚 Ready to revolutionize learning...
 ```
 
 **Test it's working:**
@@ -174,59 +173,7 @@ npm start
 **Test Quiz Endpoint:**
 - **Method:** GET
 - **URL:** `http://localhost:5000/api/quiz`
-- **Response:** Should return quiz info
-
----
-
-## Development Workflow
-
-### Daily Development Process
-
-1. **Start the server:**
-   ```bash
-   npm start
-   ```
-
-2. **Make code changes** in the `/src` folder
-
-3. **Server automatically restarts** (with nodemon)
-
-4. **Test your changes:**
-   - Use Postman or similar tool
-   - Check terminal for errors
-
-5. **Commit to GitHub:**
-   ```bash
-   git add .
-   git commit -m "Description of changes"
-   git push
-   ```
-
----
-
-## Folder Structure (Quick Reference)
-
-After setup, your folder should look like:
-
-```
-idk-org/
-├── node_modules/          # Installed dependencies (gitignored)
-├── src/
-│   ├── config/            # Configuration (coming next)
-│   ├── routes/            # API routes (coming next)
-│   ├── controllers/       # Business logic (coming next)
-│   ├── models/            # Database schemas (coming next)
-│   ├── services/          # AI & utilities (coming next)
-│   └── middleware/        # Middleware (coming next)
-├── frontend/              # Web app (coming next)
-├── mobile/                # Mobile app (coming next)
-├── .env                   # Your API keys (NEVER upload!)
-├── .env.example           # Template (reference only)
-├── .gitignore            # Files to exclude
-├── package.json          # Dependencies
-├── server.js             # Main entry point
-└── README.md             # Project info
-```
+- **Response:** Should return quiz endpoint info
 
 ---
 
@@ -260,31 +207,6 @@ idk-org/
 
 ---
 
-## Next Steps
-
-Once setup is complete:
-
-1. ✅ Backend is running
-2. ⏳ Create authentication routes (Day 2)
-3. ⏳ Build quiz module (Day 3)
-4. ⏳ Integrate AI tutor (Day 4)
-5. ⏳ Frontend setup (Day 5)
-
----
-
-## Getting Help
-
-**Issues with setup?**
-- Check error messages in terminal
-- Review this guide again
-- See troubleshooting section above
-
-**Questions about architecture?**
-- Read `PROJECT_STRUCTURE.md`
-- Check `README.md` for overview
-
----
-
 ## Important Commands
 
 ```bash
@@ -302,13 +224,14 @@ node --version
 
 # Check npm version
 npm --version
-
-# See all available scripts
-cat package.json
 ```
 
 ---
 
-**You're all set!** 🎉
+## Next Steps
 
-Your IDK.org backend is ready for development. Next, we'll build the core modules.
+Once setup is complete, the backend server is ready for development.
+
+---
+
+**Setup complete!** Your IDK.org backend is ready for development.
