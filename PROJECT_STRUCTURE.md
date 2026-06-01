@@ -1,6 +1,6 @@
 # IDK.org - Project Structure
 
-This document explains how the IDK.org repository is organized for the backend API, web interface, and mobile app.
+This document explains the organization of the IDK.org repository for the backend API, web interface, and mobile app.
 
 ---
 
@@ -51,7 +51,7 @@ idk-org/
 │   │   └── logger.js               # Logging middleware
 │   │
 │   ├── 📁 services/                # Business services
-│   │   ├── aiTutorService.js       # AI tutor communication with Claude
+│   │   ├── aiTutorService.js       # AI tutor communication
 │   │   ├── quizService.js          # Quiz processing
 │   │   ├── userService.js          # User operations
 │   │   ├── ideotypeService.js      # Learning profile analysis
@@ -69,7 +69,7 @@ idk-org/
 │   ├── src/
 │   │   ├── components/             # React components
 │   │   ├── pages/                  # Page components
-│   │   ├── services/               # API calls to backend
+│   │   ├── services/               # API calls
 │   │   ├── hooks/                  # Custom React hooks
 │   │   ├── styles/                 # CSS/styling
 │   │   ├── utils/                  # Frontend utilities
@@ -83,7 +83,7 @@ idk-org/
 │   │   ├── screens/                # App screens
 │   │   ├── components/             # Reusable components
 │   │   ├── navigation/             # Navigation setup
-│   │   ├── services/               # API calls to backend
+│   │   ├── services/               # API calls
 │   │   ├── hooks/                  # Custom hooks
 │   │   ├── styles/                 # StyleSheet definitions
 │   │   └── utils/                  # Mobile utilities
@@ -98,7 +98,7 @@ idk-org/
 │   ├── SETUP.md                    # Setup instructions
 │   └── CONTRIBUTING.md             # Contribution guidelines
 │
-└── 📁 tests/                       # Test files (coming later)
+└── 📁 tests/                       # Test files
     ├── unit/                       # Unit tests
     ├── integration/                # Integration tests
     └── e2e/                        # End-to-end tests
@@ -109,23 +109,23 @@ idk-org/
 ## Directory Descriptions
 
 ### `/src` - Backend Source Code
-The core backend API server. All business logic, database operations, and AI integration happens here.
+The core backend API server. All business logic, database operations, and AI integration.
 
 ### `/frontend` - Web Application
-React-based web interface. Users access IDK.org from their browsers here.
+React-based web interface for IDK.org accessed through browsers.
 
 ### `/mobile` - Mobile Application
-React Native app for iOS and Android. Same features as web, optimized for mobile.
+React Native app for iOS and Android with same features as web, optimized for mobile.
 
 ### `/docs` - Documentation
-All project documentation for developers, including API specs and setup guides.
+Complete project documentation for developers.
 
 ### `/tests` - Test Suite
-Unit tests, integration tests, and end-to-end tests (added in Phase 2).
+Unit, integration, and end-to-end tests for quality assurance.
 
 ---
 
-## Architecture Flow
+## Architecture Overview
 
 ```
 ┌─────────────────┬──────────────────┐
@@ -148,22 +148,24 @@ Unit tests, integration tests, and end-to-end tests (added in Phase 2).
    └───────┘  └─────────┘  └───────────┘
 ```
 
-### Data Flow
+---
+
+## Data Flow
 
 1. **User Action** (Web/Mobile)
-   - User takes quiz or asks for tutoring
+   - User takes quiz or interacts with tutor
 
 2. **API Request**
    - Frontend sends request to Express API
 
 3. **Backend Processing**
-   - Controller receives request
-   - Service/middleware processes logic
-   - Database operations if needed
+   - Controller receives and processes request
+   - Service layer handles business logic
+   - Database operations as needed
 
-4. **AI Integration** (if needed)
-   - Call Claude API for intelligent responses
-   - Get personalized teaching recommendations
+4. **AI Integration**
+   - Claude API processes personalized responses
+   - Learning recommendations generated
 
 5. **Response**
    - Backend sends JSON response
@@ -171,80 +173,10 @@ Unit tests, integration tests, and end-to-end tests (added in Phase 2).
 
 ---
 
-## Phase-Based Development
-
-### Phase 1 (Current - Q2 2026)
-- ✅ Backend API core structure
-- ✅ User authentication
-- ✅ Quiz module
-- ✅ Basic AI tutor
-- ✅ Web frontend (React)
-
-### Phase 2 (Q3 2026)
-- Mobile app (React Native)
-- Advanced analytics
-- Social features
-
-### Phase 3 (Q4 2026)
-- Institutional partnerships
-- Course libraries
-- Gamification
-
----
-
-## Key Files by Purpose
-
-### Getting Started
-- `README.md` - Start here
-- `package.json` - Install dependencies
-- `.env.example` - Setup your API keys
-- `server.js` - Run the backend
-
-### Backend Logic
-- `src/routes/` - Define API endpoints
-- `src/controllers/` - Handle business logic
-- `src/models/` - Define database schemas
-- `src/services/` - Integrate with Claude AI
-
-### Frontend
-- `frontend/src/pages/` - User-facing screens
-- `frontend/src/services/` - API calls
-
-### Mobile
-- `mobile/src/screens/` - Mobile screens
-- `mobile/src/services/` - API calls (same as frontend)
-
----
-
-## Next Steps
-
-We'll create each folder and file incrementally:
-
-**Week 1:**
-- ✅ Backend structure and config
-- ✅ User authentication
-- ✅ Quiz module
-
-**Week 2:**
-- ✅ AI tutor integration
-- ✅ Learning progress tracking
-
-**Week 3:**
-- ✅ Web frontend
-
-**Week 4:**
-- ✅ Mobile app setup
-
----
-
 ## Important Notes
 
 - **Never commit .env file** - Use .env.example as template
 - **Never commit node_modules/** - Listed in .gitignore
-- **Frontend and Mobile** are separate but share the same backend API
-- **Database** is centralized (MongoDB) for all platforms
-- **AI Integration** happens only in backend for security and cost efficiency
-
----
-
-For detailed setup, see `docs/SETUP.md` (coming next)
+- **Frontend and Mobile** share the same backend API
+- **Database** is centralized (MongoDB)
+- **AI Integration** in backend for security and efficiency
