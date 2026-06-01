@@ -1,0 +1,510 @@
+# IDK.org API Documentation
+
+Complete reference for all backend API endpoints. Used by web frontend and mobile app.
+
+---
+
+## Base URL
+
+```
+Development: http://localhost:5000/api
+Production: https://api.idk.org/api
+```
+
+---
+
+## Authentication
+
+All protected endpoints require a JWT token in the header:
+
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+Get a token by logging in at `/auth/login`.
+
+---
+
+## Endpoints Overview
+
+### Authentication Routes
+- `POST /auth/register` - Create new account
+- `POST /auth/login` - Login and get JWT token
+- `POST /auth/logout` - Logout
+- `POST /auth/refresh-token` - Get new JWT token
+
+### User Routes
+- `GET /user/profile` - Get user profile (protected)
+- `PUT /user/profile` - Update user profile (protected)
+- `GET /user/settings` - Get user settings (protected)
+- `PUT /user/settings` - Update user settings (protected)
+
+### Quiz Routes
+- `GET /quiz/questions` - Get all 10 quiz questions
+- `POST /quiz/submit` - Submit quiz answers and get Ideotype
+- `GET /quiz/result` - Get user's last quiz result (protected)
+
+### AI Tutor Routes
+- `POST /tutor/chat` - Send message to AI tutor (protected)
+- `GET /tutor/history` - Get chat history (protected)
+- `POST /tutor/subject` - Change learning subject (protected)
+
+### Learning Routes
+- `GET /learning/progress` - Get learning progress (protected)
+- `POST /learning/session` - Start learning session (protected)
+- `PUT /learning/session/:id` - Update session (protected)
+- `GET /learning/recommendations` - Get personalized recommendations (protected)
+
+---
+
+## Detailed Endpoint Reference
+
+### AUTHENTICATION
+
+#### POST `/auth/register`
+**Description:** Create a new user account
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePassword123!",
+  "name": "John Doe",
+  "confirmPassword": "SecurePassword123!"
+}
+```
+
+**Response (201):**
+```json
+{
+  "success": true,
+  "message": "User registered successfully",
+  "user": {
+    "id": "user_123",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "createdAt": "2026-06-02T10:30:00Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+**Error (400):**
+```json
+{
+  "success": false,
+  "message": "Email already exists"
+}
+```
+
+---
+
+#### POST `/auth/login`
+**Description:** Login and receive JWT token
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePassword123!"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "user": {
+    "id": "user_123",
+    "email": "user@example.com",
+    "name": "John Doe"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "expiresIn": "7d"
+}
+```
+
+**Error (401):**
+```json
+{
+  "success": false,
+  "message": "Invalid email or password"
+}
+```
+
+---
+
+### QUIZ
+
+#### GET `/quiz/questions`
+**Description:** Get all 10 diagnostic quiz questions
+
+**Request:**
+```
+GET /quiz/questions
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "When learning something new, do you prefer:",
+      "type": "multiChoice",
+      "options": [
+        {
+          "id": "a",
+          "text": "Visual diagrams and pictures",
+          "weight": {"visual": 1.0, "auditory": 0, "linguistic": 0}
+        },
+        {
+          "id": "b",
+          "text": "Listening to explanations",
+          "weight": {"visual": 0, "auditory": 1.0, "linguistic": 0}
+        },
+        {
+          "id": "c",
+          "text": "Reading detailed text",
+          "weight": {"visual": 0, "auditory": 0, "linguistic": 1.0}
+        },
+        {
+          "id": "d",
+          "text": "Hands-on practice",
+          "weight": {"visual": 0.5, "auditory": 0, "linguistic": 0.5}
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "...",
+      "...": "..."
+    }
+  ],
+  "totalQuestions": 10
+}
+```
+
+---
+
+#### POST `/quiz/submit`
+**Description:** Submit quiz answers and calculate user's Ideotype
+
+**Authorization:** None (quiz is public)
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "answers": [
+    {"questionId": 1, "selectedOption": "a"},
+    {"questionId": 2, "selectedOption": "c"},
+    {"questionId": 3, "selectedOption": "b"},
+    {"questionId": 4, "selectedOption": "d"},
+    {"questionId": 5, "selectedOption": "a"},
+    {"questionId": 6, "selectedOption": "a"},
+    {"questionId": 7, "selectedOption": "b"},
+    {"questionId": 8, "selectedOption": "c"},
+    {"questionId": 9, "selectedOption": "a"},
+    {"questionId": 10, "selectedOption": "b"}
+  ]
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Quiz submitted successfully",
+  "ideotype": {
+    "profile": "Visual-Linguistic Hybrid",
+    "scores": {
+      "visual": 0.75,
+      "auditory": 0.35,
+      "linguistic": 0.70
+    },
+    "dominantChannel": "visual",
+    "secondaryChannel": "linguistic",
+    "archetype": "The Visual Thinker",
+    "description": "You process information best through visual representations...",
+    "recommendations": [
+      "Use diagrams and mind maps",
+      "Watch educational videos",
+      "Color-code your notes",
+      "Use visual metaphors"
+    ]
+  }
+}
+```
+
+---
+
+### AI TUTOR
+
+#### POST `/tutor/chat`
+**Description:** Send a message to your AI tutor
+
+**Authorization:** Required (Bearer token)
+
+**Request:**
+```json
+{
+  "message": "Explain what photosynthesis is in a way I can visualize",
+  "subject": "biology",
+  "topic": "photosynthesis"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "response": {
+    "id": "session_123",
+    "tutorMessage": "Imagine a solar panel on your roof... Photosynthesis works similarly. Here's a diagram...",
+    "suggestions": [
+      "Show me an example",
+      "Test my understanding",
+      "Slow down",
+      "Speed up"
+    ],
+    "timestamp": "2026-06-02T10:35:00Z"
+  }
+}
+```
+
+---
+
+#### GET `/tutor/history`
+**Description:** Get chat history with AI tutor
+
+**Authorization:** Required (Bearer token)
+
+**Request:**
+```
+GET /tutor/history?limit=50&subject=biology
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "history": [
+    {
+      "id": "msg_1",
+      "userMessage": "What is photosynthesis?",
+      "tutorResponse": "Photosynthesis is the process...",
+      "subject": "biology",
+      "timestamp": "2026-06-02T10:30:00Z"
+    },
+    {
+      "id": "msg_2",
+      "userMessage": "Can you explain it visually?",
+      "tutorResponse": "Of course! Here's a visual...",
+      "subject": "biology",
+      "timestamp": "2026-06-02T10:32:00Z"
+    }
+  ],
+  "totalMessages": 2,
+  "subject": "biology"
+}
+```
+
+---
+
+### LEARNING
+
+#### GET `/learning/progress`
+**Description:** Get user's learning progress and statistics
+
+**Authorization:** Required (Bearer token)
+
+**Request:**
+```
+GET /learning/progress
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "progress": {
+    "totalLessonsTaken": 15,
+    "totalMinutesPracticed": 240,
+    "overallScore": 0.82,
+    "lastSessionDate": "2026-06-02T09:00:00Z",
+    "subjects": [
+      {
+        "name": "Python Programming",
+        "progress": 0.65,
+        "lessonsCompleted": 8,
+        "topics": [
+          {
+            "name": "Variables and Data Types",
+            "mastery": 0.85
+          },
+          {
+            "name": "Functions",
+            "mastery": 0.45
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
+#### GET `/learning/recommendations`
+**Description:** Get AI-generated personalized learning recommendations
+
+**Authorization:** Required (Bearer token)
+
+**Request:**
+```
+GET /learning/recommendations?subject=python
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "recommendations": [
+    {
+      "type": "focus",
+      "title": "You're struggling with Functions",
+      "description": "Your mastery score is 45%. Try visual flowcharts to understand function flow.",
+      "action": "Start visual tutorial"
+    },
+    {
+      "type": "strength",
+      "title": "Great job with Variables!",
+      "description": "You've mastered variable concepts. Ready for the next challenge?",
+      "action": "Move to advanced topics"
+    },
+    {
+      "type": "suggestion",
+      "title": "Try a different learning format",
+      "description": "You learn best visually, but you haven't tried our diagram-based lessons yet.",
+      "action": "View diagram tutorials"
+    }
+  ]
+}
+```
+
+---
+
+## Error Responses
+
+All endpoints return errors in this format:
+
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "code": "ERROR_CODE",
+  "details": "Additional information if applicable"
+}
+```
+
+### Common Error Codes
+
+- `UNAUTHORIZED` (401) - Missing or invalid token
+- `FORBIDDEN` (403) - Access denied
+- `NOT_FOUND` (404) - Resource not found
+- `VALIDATION_ERROR` (400) - Invalid input
+- `SERVER_ERROR` (500) - Internal server error
+
+---
+
+## Rate Limiting
+
+To prevent abuse:
+
+```
+- Unauthenticated: 100 requests/hour
+- Authenticated: 1000 requests/hour
+- AI Tutor: 100 chats/day
+```
+
+---
+
+## Response Headers
+
+All responses include:
+
+```
+Content-Type: application/json
+X-Request-ID: unique_request_id
+X-Response-Time: milliseconds
+Cache-Control: appropriate headers
+```
+
+---
+
+## WebSocket (Real-time Features - Coming Later)
+
+For real-time tutor chat:
+
+```
+ws://localhost:5000/api/tutor/ws
+```
+
+---
+
+## Usage Examples
+
+### JavaScript/Fetch
+```javascript
+// Register
+const response = await fetch('http://localhost:5000/api/auth/register', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    password: 'SecurePassword123!',
+    name: 'John Doe',
+    confirmPassword: 'SecurePassword123!'
+  })
+});
+const data = await response.json();
+const token = data.token;
+
+// Get quiz questions
+const quizResponse = await fetch('http://localhost:5000/api/quiz/questions');
+const quizData = await quizResponse.json();
+```
+
+### React Component
+```javascript
+import React, { useState } from 'react';
+
+function QuizComponent() {
+  const [questions, setQuestions] = useState([]);
+
+  React.useEffect(() => {
+    fetch('http://localhost:5000/api/quiz/questions')
+      .then(res => res.json())
+      .then(data => setQuestions(data.questions));
+  }, []);
+
+  return (
+    <div>
+      {questions.map(q => (
+        <div key={q.id}>{q.question}</div>
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+## Documentation Updates
+
+This API documentation will be updated as new endpoints are added. Current version: **0.1.0**
+
+Next update: Quiz and Authentication endpoints (Day 2)
