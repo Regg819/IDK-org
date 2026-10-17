@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './src/config/database.js';
+import authRoutes from './src/routes/authRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -68,7 +69,7 @@ app.get('/health', (req, res) => {
 });
 
 // API routes (will be added incrementally)
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api/quiz', quizRoutes);
 // app.use('/api/tutor', tutorRoutes);
 // app.use('/api/learning', learningRoutes);
