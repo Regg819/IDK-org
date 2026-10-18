@@ -2,6 +2,8 @@
 
 > **An AI-powered personalized learning platform that understands how YOUR brain learns and adapts teaching to match it.**
 
+> **Status: early development.** Only the backend authentication foundation exists today (register, login, profile). The quiz, AI tutor, progress tracking and the web and mobile apps described below are planned, not built yet. See [STATUS.md](STATUS.md) for exactly what works and what is missing.
+
 ---
 
 ## The Problem

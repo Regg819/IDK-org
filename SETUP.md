@@ -41,9 +41,9 @@ This installs all required Node.js packages from `package.json`.
 
 **What gets installed:**
 - Express (web server)
-- MongoDB driver (database)
-- JWT (authentication)
-- Claude API client
+- Mongoose (MongoDB)
+- JWT and bcryptjs (authentication)
+- axios (HTTP client; the Anthropic SDK is not installed yet)
 - CORS (cross-origin requests)
 - And more...
 
@@ -171,12 +171,15 @@ npm start
 
 **Expected output:**
 ```
-🚀 IDK.org server running on http://localhost:5000
+🚀 IDK.org Server Started
+📍 Server: http://localhost:5000
 ```
+followed by `✅ MongoDB Connected` once the database connection succeeds. If `JWT_SECRET` is missing the server exits immediately with an error, and if MongoDB cannot be reached it exits with a database connection error.
 
 **Test it's working:**
 - Open browser: `http://localhost:5000`
-- Should see: `{"message":"IDK.org API is running","version":"0.1.0","status":"online"}`
+- Should see: `{"message":"IDK.org API is running","version":"0.1.0","status":"online","timestamp":"..."}`
+- Health check: `http://localhost:5000/health`
 
 ---
 
