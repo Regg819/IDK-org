@@ -1,15 +1,18 @@
-type: web
-env: node
-buildCommand: npm ci
-startCommand: npm start
-healthCheckPath: /health
-envVars:
-  NODE_ENV:
-    value: production
-    sync: false
-  MONGODB_URI:
-    sync: false
-  JWT_SECRET:
-    sync: false
-  WEB_URL:
-    sync: false
+services:
+  - type: web
+    name: idk-org-api
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: WEB_URL
+        sync: false
