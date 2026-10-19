@@ -15,11 +15,14 @@ function clearWarmup() {
   warmupTimer = null;
 }
 
+let hideTimer = null;
 function showMessage(text) {
+  clearWarmup();
   const el = document.getElementById('message');
   el.textContent = text;
   el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 4000);
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => { el.style.display = 'none'; }, 4000);
 }
 
 function fetchWithTimeout(url, options = {}) {
@@ -47,19 +50,18 @@ function showScreen(id) {
   document.getElementById('message').style.display = 'none';
 }
 
-// Header with menu button – added once on page load
+// Header with a Menu button at the top of the quiz, result and tutor screens
 function addHeader() {
-  const header = document.createElement('div');
-  header.style.display = 'flex';
-  header.style.justifyContent = 'flex-end';
-  header.style.marginBottom = '0.5rem';
-  const menuBtn = document.createElement('button');
-  menuBtn.textContent = 'Menu';
-  menuBtn.onclick = () => showScreen('menu');
-  header.appendChild(menuBtn);
-  // Insert at top of each screen container
-  document.querySelectorAll('.card').forEach(card => {
-    card.insertBefore(header.cloneNode(true), card.firstChild);
+  document.querySelectorAll('#quiz, #result, #tutor').forEach(card => {
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'flex-end';
+    const menuBtn = document.createElement('button');
+    menuBtn.textContent = 'Menu';
+    menuBtn.style.width = 'auto';
+    menuBtn.addEventListener('click', () => showScreen('menu'));
+    header.appendChild(menuBtn);
+    card.insertBefore(header, card.firstChild);
   });
 }
 
@@ -94,7 +96,18 @@ function register() {
     .catch(err => showMessage(err.message));
 }
 
-function initApp() { showScreen('quiz'); loadQuiz(); }
+function initApp() {
+  maybeShowWarmup();
+  fetchWithTimeout(`${window.IDK_CONFIG.API_URL}/api/quiz/result`, { headers: { ...authHeaders() } })
+    .then(r => {
+      clearWarmup();
+      handleAuthError(r);
+      if (r.ok) { initTutor(); return; }
+      if (r.status === 404) { showScreen('quiz'); loadQuiz(); return; }
+      if (r.status !== 401) showMessage('Could not load your result. Please try again.');
+    })
+    .catch(err => showMessage(err.message));
+}
 
 let quizData = [];
 let answers = [];
@@ -161,7 +174,12 @@ function submitQuiz() {
     .catch(err => showMessage(err.message));
 }
 
-function initTutor() { showScreen('tutor'); document.getElementById('chat').replaceChildren(); }
+function initTutor() {
+  showScreen('tutor');
+  document.getElementById('chat').replaceChildren();
+  document.getElementById('suggestions').replaceChildren();
+  addBubble('bot', 'Hi! I am your study coach. Tell me what you are learning and what feels tricky.');
+}
 
 function sendMessage() {
   const input = document.getElementById('msgInput');
@@ -179,8 +197,8 @@ function sendMessage() {
     .then(r => { clearWarmup(); handleAuthError(r); if (!r.ok) return r.json().then(j => { throw new Error(j.message || 'Tutor failed'); }); return r.json(); })
     .then(res => {
       const reply = res.response || {};
-      addBubble('bot', reply.tutorMessage || res.tutorMessage);
-      // steps are not displayed per spec – only suggestions as chips
+      addBubble('bot', reply.tutorMessage || 'Sorry, I could not answer that.');
+      // tutorMessage already contains the numbered steps; chips come from suggestions
       const suggDiv = document.getElementById('suggestions');
       suggDiv.replaceChildren();
       (reply.suggestions || []).forEach(sug => {
@@ -209,6 +227,8 @@ document.getElementById('loginBtn').onclick = login;
 document.getElementById('registerBtn').onclick = register;
 document.getElementById('nextBtn').onclick = nextStep;
 document.getElementById('sendBtn').onclick = sendMessage;
+document.getElementById('toTutorBtn').onclick = initTutor;
+document.getElementById('tutorBtn').onclick = initTutor;
 document.getElementById('againBtn').onclick = () => { showScreen('quiz'); loadQuiz(); };
 document.getElementById('logoutBtn').onclick = logout;
 
