@@ -67,6 +67,10 @@ Start the API, then serve the web app in a second terminal:
 
 ```bash
 npm start                  # API on http://localhost:5000
+
+### Deploy
+See [DEPLOY.md](DEPLOY.md) for the step‑by‑step hosting guide.
+
 npx serve docs -l 3000     # web app on http://localhost:3000
 ```
 
