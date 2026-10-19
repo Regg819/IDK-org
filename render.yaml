@@ -1,0 +1,15 @@
+type: web
+env: node
+buildCommand: npm ci
+startCommand: npm start
+healthCheckPath: /health
+envVars:
+  NODE_ENV:
+    value: production
+    sync: false
+  MONGODB_URI:
+    sync: false
+  JWT_SECRET:
+    sync: false
+  WEB_URL:
+    sync: false
